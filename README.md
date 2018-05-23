@@ -1,1 +1,2 @@
-# votingDapp
+# Multisignature wallet with User Inteface
+
