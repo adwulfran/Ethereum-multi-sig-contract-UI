@@ -4,117 +4,232 @@ script.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(script);
 
 if (typeof web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-        } else {
-           var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/Z9CteL366EwXY25GYzX1'));
-        }
+	web3 = new Web3(web3.currentProvider);
+} else {
+	var web3 = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/Z9CteL366EwXY25GYzX1'));
+}
 
-        web3.eth.defaultAccount = web3.eth.accounts[0];
+web3.eth.defaultAccount = web3.eth.accounts[0];
+console.log(web3.eth.accounts[0]);
 
-        var CoursetroContract = web3.eth.contract([
+var CoursetroContract = web3.eth.contract([
+{
+	"constant": false,
+	"inputs": [
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "candidate",
-				"type": "bytes32"
-			}
-		],
-		"name": "totalVotesFor",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "candidate",
-				"type": "bytes32"
-			}
-		],
-		"name": "validCandidate",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"name": "votesReceived",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "candidateList",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes32"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "candidate",
-				"type": "bytes32"
-			}
-		],
-		"name": "voteForCandidate",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"name": "candidateNames",
-				"type": "bytes32[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
+		"name": "owner",
+		"type": "address"
 	}
+	],
+	"name": "addOwner",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+	{
+		"name": "transactionId",
+		"type": "uint256"
+	}
+	],
+	"name": "deleteTransaction",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+	{
+		"name": "owner",
+		"type": "address"
+	}
+	],
+	"name": "removeOwner",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+	{
+		"name": "transactionId",
+		"type": "uint256"
+	}
+	],
+	"name": "signTransaction",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"anonymous": false,
+	"inputs": [
+	{
+		"indexed": false,
+		"name": "by",
+		"type": "address"
+	},
+	{
+		"indexed": false,
+		"name": "transactionId",
+		"type": "uint256"
+	}
+	],
+	"name": "TransactionSigned",
+	"type": "event"
+},
+{
+	"anonymous": false,
+	"inputs": [
+	{
+		"indexed": false,
+		"name": "from",
+		"type": "address"
+	},
+	{
+		"indexed": false,
+		"name": "to",
+		"type": "address"
+	},
+	{
+		"indexed": false,
+		"name": "amount",
+		"type": "uint256"
+	},
+	{
+		"indexed": false,
+		"name": "transactionId",
+		"type": "uint256"
+	}
+	],
+	"name": "TransactionCompleted",
+	"type": "event"
+},
+{
+	"anonymous": false,
+	"inputs": [
+	{
+		"indexed": false,
+		"name": "from",
+		"type": "address"
+	},
+	{
+		"indexed": false,
+		"name": "amount",
+		"type": "uint256"
+	}
+	],
+	"name": "DepositFunds",
+	"type": "event"
+},
+{
+	"anonymous": false,
+	"inputs": [
+	{
+		"indexed": false,
+		"name": "from",
+		"type": "address"
+	},
+	{
+		"indexed": false,
+		"name": "to",
+		"type": "address"
+	},
+	{
+		"indexed": false,
+		"name": "amount",
+		"type": "uint256"
+	},
+	{
+		"indexed": false,
+		"name": "transactionId",
+		"type": "uint256"
+	}
+	],
+	"name": "TransactionCreated",
+	"type": "event"
+},
+{
+	"constant": false,
+	"inputs": [
+	{
+		"name": "to",
+		"type": "address"
+	},
+	{
+		"name": "amount",
+		"type": "uint256"
+	}
+	],
+	"name": "transferTo",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"constant": false,
+	"inputs": [
+	{
+		"name": "amount",
+		"type": "uint256"
+	}
+	],
+	"name": "withdraw",
+	"outputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "function"
+},
+{
+	"payable": true,
+	"stateMutability": "payable",
+	"type": "fallback"
+},
+{
+	"inputs": [],
+	"payable": false,
+	"stateMutability": "nonpayable",
+	"type": "constructor"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "getPendingTransactions",
+	"outputs": [
+	{
+		"name": "",
+		"type": "uint256[]"
+	}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+},
+{
+	"constant": true,
+	"inputs": [],
+	"name": "walletBalance",
+	"outputs": [
+	{
+		"name": "",
+		"type": "uint256"
+	}
+	],
+	"payable": false,
+	"stateMutability": "view",
+	"type": "function"
+}
 ]);
- CoursetroContract1 = CoursetroContract.at('0xf0ccc528909414fc78a867ebd7e654e9f60cec10');
+CoursetroContract1 = CoursetroContract.at('0x5067141403a5bfb69281c92a9ed7a3c7754f9bfe');
  //tokenContract = web3.eth.contract(contractABI).at(contractAddress)
   //   console.log(tokenContract.balanceOf(address).toNumber())
  // CoursetroContract1.getCandidateList.call();
@@ -123,22 +238,45 @@ if (typeof web3 !== 'undefined') {
 //var zoka = CoursetroContract1.totalVotesFor.call(name).toString().then(function (result) { console.log(result)});
 //console.log(zoka);
 let name = "0x666666666a6f617175696d000000000000000000000000000000000000000000";
-CoursetroContract1.totalVotesFor.call(name, function (err, res) {
+CoursetroContract1.walletBalance.call(function (err, res) {
   //do stuff
-   $( document ).ready(function() {
-  		$('#candidate-1').html('salut'+res)
+  $( document ).ready(function() {
+  	$('#candidate-1').html(''+res)
   })
   console.log(res)
 })
-
-CoursetroContract1.candidateList.call(0,function (err, res) {
+var transacEncours = [];
+CoursetroContract1.getPendingTransactions.call(function (err, res) {
   //do stuff
-  $("#insTrans").html('Block hash: ' +hex2a(res));
+  $( document ).ready(function() {
+  	$('#candidate-3').html(''+res)
+  	
+  })
   console.log(res);
+  transacEncours.unshift(Number(res)); console.log(transacEncours[0]);
 })
 
 
- 
+$( document ).ready(function() {
+	$("#btnwithdraw").click(function() {
+		CoursetroContract1.withdraw(500000000000000000, function (err, res) {
+		  //do stuff
+		  console.log(res);
+		})
+	})
+	$("#btnsign").click(function() {
+		CoursetroContract1.signTransaction(transacEncours[0], function (err, res) {
+		  //do stuff
+		  console.log(res);
+		  console.log(transacEncours[0]);
+		})
+	})
+})
+
+
+
+
+ /*
 function hex2a(hexx) {
     var hex = hexx.toString();//force conversion
     var str = '';
@@ -169,13 +307,13 @@ CoursetroContract1.candidateList().call().then(function(error, result) {
            } else
                 console.log(error);
        });
-*/
+       */
 
  //  var addressz = '0x337b78d8f72e0b9bfe28bad7925670f294880da8';
  //CoursetroContract1.balanceOf(addressz).call()
       //              .then(function (result) { console.log(result)});
 //
-   
+
      /*   var Coursetro = CoursetroContract.at('0x337b78d8f72e0b9bfe28bad7925670f294880da8');
 
         var instructorEvent = Coursetro.instructor({},'latest');
@@ -204,4 +342,4 @@ CoursetroContract1.candidateList().call().then(function(error, result) {
                     $("#loader").hide();
             });
         });
- */
+        */
