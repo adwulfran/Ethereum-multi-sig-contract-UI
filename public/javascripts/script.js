@@ -1,3 +1,4 @@
+
 var script = document.createElement('script');
 script.src = 'http://code.jquery.com/jquery-1.11.0.min.js';
 script.type = 'text/javascript';
@@ -245,30 +246,45 @@ CoursetroContract1.walletBalance.call(function (err, res) {
   })
   console.log(res)
 })
-var transacEncours = [];
+
+//!\\ SI probleme avec getPendingTransactions il suffit d'appeler la fonction avec un boutton
 CoursetroContract1.getPendingTransactions.call(function (err, res) {
   //do stuff
+  
   $( document ).ready(function() {
-  	$('#candidate-3').html(''+res)
+  	$('#candidate-3').html(''+res[0])
   	
-  })
-  console.log(res);
-  transacEncours.unshift(Number(res)); console.log(transacEncours[0]);
+  });
+  console.log(JSON.stringify(res));
+  //this.transacEncours.push(Number(res)); 
+  console.log('c quoi la transac en cours'+res);
 })
+
 
 
 $( document ).ready(function() {
 	$("#btnwithdraw").click(function() {
-		CoursetroContract1.withdraw(500000000000000000, function (err, res) {
+		CoursetroContract1.withdraw(300000000000000000, function (err, res) {
 		  //do stuff
 		  console.log(res);
+		  //count pour numero transaction
+		  
+		  
 		})
 	})
 	$("#btnsign").click(function() {
-		CoursetroContract1.signTransaction(transacEncours[0], function (err, res) {
+		CoursetroContract1.signTransaction(countTransactions, function (err, res) {
 		  //do stuff
 		  console.log(res);
 		  console.log(transacEncours[0]);
+		})
+	})
+	$("#btnsee").click(function() {
+		CoursetroContract1.getPendingTransactions.call(function (err, res) {
+		  //do stuff
+		  $('#candidate-3').html(''+res)
+		  console.log('BTSEE'+res);
+		  
 		})
 	})
 })
